@@ -21,7 +21,7 @@ class InterceptHandler(logging.Handler):
         logging.Handler (Filterer): Handler to filter logs
     """
 
-    def emit(self, record: logging.LogRecord) -> None:
+    def emit(self, record: logging.LogRecord):
         """Emit a log record."""
 
         # Get corresponding Loguru level if it exists
@@ -52,7 +52,7 @@ class StubbedGunicornLogger(Logger):
         Logger (object): Gunicon logger class
     """
 
-    def setup(self, cfg) -> None:
+    def setup(self, cfg):
         """Setup logger."""
 
         handler: logging.NullHandler = logging.NullHandler()
@@ -74,7 +74,7 @@ class StandaloneApplication(BaseApplication):
         BaseApplication (object): Base class for Gunicorn applications
     """
 
-    def __init__(self, app: FastAPI, options: dict | None = None):
+    def __init__(self, app: FastAPI, options: Optional[dict] = None):
         """Initialize the application
 
         Args:
@@ -85,7 +85,7 @@ class StandaloneApplication(BaseApplication):
         self.application: FastAPI = app
         super().__init__()
 
-    def load_config(self) -> None:
+    def load_config(self):
         """Load Gunicorn configuration."""
         config: dict = {
             key: value

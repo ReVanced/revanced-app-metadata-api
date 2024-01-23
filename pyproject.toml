@@ -18,6 +18,8 @@ uvicorn = {extras = ["standard"], version = "^0.27.0"}
 fastapi-limiter = "^0.1.6"
 cashews = {extras = ["dill", "redis", "speedup"], version = "^7.0.0"}
 gunicorn = "^21.2.0"
+cytoolz = "^0.12.2"
+brotli-asgi = "^1.4.0"
 
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.8.0"

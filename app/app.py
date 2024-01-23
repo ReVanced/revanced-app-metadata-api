@@ -2,15 +2,18 @@ import redis.asyncio as redis
 from typing import Annotated, Optional
 from contextlib import asynccontextmanager
 
+from starlette.middleware.base import BaseHTTPMiddleware
+
+from brotli_asgi import BrotliMiddleware
 from fastapi_limiter import FastAPILimiter
 from fastapi_limiter.depends import RateLimiter
-from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, HTTPException, Query, status, Depends
 from fastapi.responses import ORJSONResponse, StreamingResponse, RedirectResponse
 
 from app.utils.funcs import env
 from app.models.search import Metatags
 from app.controllers.search import Engine
+from app.middlewares.headers import cache_control, cors
 
 
 @asynccontextmanager
@@ -47,12 +50,10 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+app.add_middleware(BaseHTTPMiddleware, dispatch=cors)
+app.add_middleware(BaseHTTPMiddleware, dispatch=cache_control)
 app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
-    allow_credentials=True,
+    BrotliMiddleware, quality=11, mode="text", gzip_fallback=True, lgblock=0
 )
 
 engine = Engine()
