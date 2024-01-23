@@ -1,0 +1,21 @@
+version: "3.8"
+
+services:
+  redis:
+    container_name: revanced-app-metadata-api-redis
+    image: redis/redis-stack-server:latest
+    environment:
+      - REDIS_ARGS=--save 60 1 --appendonly yes
+    volumes:
+      - /data/redis/revanced-app-metadata-api:/data
+    restart: always
+  revanced-app-metadata-api:
+    container_name: revanced-app-metadata-api
+    image: ghcr.io/revanced/revanced-app-metadata-api:latest
+    environment:
+      - SEARCH_API_KEY=YOUR_CSE_SEARCH_API_KEY
+      - SEARCH_ENGINE_ID=YOUR_CSE_SEARCH_ID
+      - REDIS_URL=rediss://revanced-app-metadata-api-redis:6379
+    ports:
+      - 127.0.0.1:7935:8000
+    restart: unless-stopped

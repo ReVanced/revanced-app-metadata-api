@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "revanced-playstore-metadata-api"
+name = "revanced-app-metadata-api"
 version = "1.0.0"
-description = ""
+description = "Return relevant metadata for a given Android app package ID"
 authors = ["Alexandre Teles <alexandre.teles@ufba.br>"]
 license = "AGPLv3"
 readme = "README.md"

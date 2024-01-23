@@ -39,8 +39,8 @@ async def lifespan(_: FastAPI):
 
 
 app = FastAPI(
-    title="Google Play Store Metadata API",
-    description="Return relevant metadata from Google Play Store for a given package ID.",
+    title="Android App Metadata API",
+    description="Return relevant metadata for a given Android app package ID.",
     version="1.0.0",
     license_info={
         "name": "AGPLv3",
