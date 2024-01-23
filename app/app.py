@@ -8,11 +8,11 @@ from brotli_asgi import BrotliMiddleware
 from fastapi_limiter import FastAPILimiter
 from fastapi_limiter.depends import RateLimiter
 from fastapi import FastAPI, HTTPException, Query, status, Depends
-from fastapi.responses import ORJSONResponse, StreamingResponse, RedirectResponse
+from fastapi.responses import ORJSONResponse, RedirectResponse
 
 from app.utils.funcs import env
 from app.models.search import Metatags
-from app.controllers.search import Engine
+from app.controllers.search import GoogleCSE
 from app.middlewares.headers import cache_control, cors
 
 
@@ -56,7 +56,7 @@ app.add_middleware(
     BrotliMiddleware, quality=11, mode="text", gzip_fallback=True, lgblock=0
 )
 
-engine = Engine()
+engine = GoogleCSE()
 
 
 @app.get(
@@ -82,7 +82,7 @@ async def root() -> RedirectResponse:
 )
 async def search(
     id_list: Annotated[Optional[list[str]], Query(alias="id")] = None
-) -> StreamingResponse:
+) -> list[Metatags]:
     """
     Performs a search using the provided list of IDs.
 
@@ -90,7 +90,7 @@ async def search(
         id_list (Optional[list[str]]): A list of IDs to search for. Defaults to None. Example: ?id=com.google.android.apps.maps&id=com.google.android.apps.translate
 
     Returns:
-        StreamingResponse: A streaming response object (JSON) containing the search results.
+        list[Metatags]: A list of Metatags objects containing the metadata for each ID.
 
     Raises:
         HTTPException: If no IDs were provided, more than 10 IDs were provided, or an error occurred during the search.
@@ -108,7 +108,7 @@ async def search(
         )
 
     try:
-        return StreamingResponse(engine.search(id_list=id_list))
+        return await engine.search(id_list=id_list)
     except Exception as e:
         match type(e).__name__:
             case "RuntimeError":
