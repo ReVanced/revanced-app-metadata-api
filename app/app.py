@@ -1,4 +1,3 @@
-import uvicorn
 import redis.asyncio as redis
 from typing import Annotated, Optional
 from contextlib import asynccontextmanager
@@ -9,9 +8,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, HTTPException, Query, status, Depends
 from fastapi.responses import ORJSONResponse, StreamingResponse, RedirectResponse
 
-from api.utils.funcs import env
-from api.models.search import Metatags
-from api.controllers.search import Engine
+from app.utils.funcs import env
+from app.models.search import Metatags
+from app.controllers.search import Engine
 
 
 @asynccontextmanager
@@ -87,10 +86,10 @@ async def search(
     Performs a search using the provided list of IDs.
 
     Args:
-        id_list (Optional[list[str]]): A list of IDs to search for. Defaults to None.
+        id_list (Optional[list[str]]): A list of IDs to search for. Defaults to None. Example: ?id=com.google.android.apps.maps&id=com.google.android.apps.translate
 
     Returns:
-        StreamingResponse: A streaming response object containing the search results.
+        StreamingResponse: A streaming response object (JSON) containing the search results.
 
     Raises:
         HTTPException: If no IDs were provided, more than 10 IDs were provided, or an error occurred during the search.
@@ -127,7 +126,3 @@ async def search(
                 raise HTTPException(
                     status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
                 )
-
-
-if __name__ == "__main__":
-    uvicorn.run("app:app", reload=True)

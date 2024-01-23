@@ -6,8 +6,8 @@ from datetime import timedelta
 from typing import AsyncGenerator
 from httpx_auth import QueryApiKey
 
-from api.utils.funcs import env
-from api.models.search import QueryParams, RequestHeaders, SearchResults
+from app.utils.funcs import env
+from app.models.search import QueryParams, RequestHeaders, SearchResults
 
 
 class Engine:
