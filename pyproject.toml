@@ -14,7 +14,7 @@ loguru = "^0.7.2"
 uvloop = "^0.19.0"
 httpx-auth = "^0.19.0"
 orjson = "^3.9.12"
-uvicorn = {extras = ["standard"], version = "^0.27.0"}
+uvicorn = {extras = ["standard"], version = "^0.28.0"}
 fastapi-limiter = "^0.1.6"
 cashews = {extras = ["dill", "redis", "speedup"], version = "^7.0.0"}
 gunicorn = "^21.2.0"
